@@ -1,0 +1,74 @@
+.sDatatable {
+    border-spacing: 0;
+    width: 100%;
+}
+
+.sDatatable .sDatatableHead > tr > th {
+    text-align: left;
+    padding: 1rem 1rem;
+    border: 1px solid #dee2e6;
+    border-width: 0 0 1px 0;
+    font-weight: 700;
+    color: #343a40;
+    background: #f8f9fa;
+    transition: box-shadow 0.2s;
+}
+
+.sDatatable .sDatatableHeader {
+    background: #f8f9fa;
+    color: #343a40;
+    border: 1px solid #dee2e6;
+    border-width: 1px 0 1px 0;
+    padding: 1rem 1rem;
+    font-weight: 700;
+}
+
+ .headerContainer {
+    display: flex;
+    justify-content: flex-end;
+    background: #f8f9fa;
+    color: #343a40;
+    border: 1px solid #dee2e6;
+    border-width: 1px 0 1px 0;
+    padding: 1rem 1rem;
+    font-weight: 700;
+}
+
+.sDatatable .sDatatableTBody {
+
+}
+
+.sDatatable .sDatatableTBody > tr {
+    background: #ffffff;
+    color: #495057;
+    transition: box-shadow 0.2s;
+}
+
+.sDatatable .sDatatableTBody > tr:hover {
+    background: #e9ecef;
+    color: #495057;
+    cursor: pointer;
+}
+
+.sDatatable .sDatatableTBody > tr > td {
+    text-align: left;
+    border: 1px solid #dee2e6;
+    border-width: 0 0 1px 0;
+    padding: 1rem 1rem;
+}
+
+.sDatatableCellSmall {
+    padding: 0.5rem 0.5rem !important;
+}
+
+.sDatatableCellLarge {
+    padding: 1.5rem 1.5rem !important;
+}
+
+.sDatatableHeaderCellSmall {
+    padding: 0.5rem 0.5rem !important;
+}
+
+.sDatatableHeaderCellLarge {
+    padding: 1.5rem 1.5rem !important;
+}
