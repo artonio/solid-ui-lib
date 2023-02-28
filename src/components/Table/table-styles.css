@@ -53,7 +53,7 @@
     color: #4338CA;
 }
 
-.s-datatable .s-datatable-tbody > tr:hover {
+.s-datatable .s-datatable-tbody > tr.s-datatable-row-selectable:hover {
     background: #e9ecef;
     color: #495057;
     cursor: pointer;

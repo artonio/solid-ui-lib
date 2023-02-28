@@ -16,6 +16,7 @@ export interface ITableBodyProps extends IBasicProps {
 	columns: IColumnProps[];
 	data: any[];
 
+	selectionMode?: SelectionMode;
 	selection?: any;
 	onRowSelected?: (row: any) => any;
 }
