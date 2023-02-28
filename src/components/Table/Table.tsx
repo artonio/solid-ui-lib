@@ -39,7 +39,8 @@ const DefaultTableBodyRenderer = (props: ITableBodyProps) => {
 			{person => (
 				<tr classList={{
 					's-datatable-row-selected': isTwoObjectsEqual(person, props.selection),
-					's-datatable-row-selectable': props.selectionMode !== 'none'
+					's-datatable-row-selectable': props.selectionMode !== 'none',
+					's-datatable-row-striped': props.strippedRows
 				}} onClick={() => onRowClicked(person)}>
 					<For each={props.columns}>
 						{column => (
@@ -114,6 +115,7 @@ export const Table = (props: ITableProps) => {
 						data={tableData()}
 						selectionMode={selectionMode}
 						selection={props.selection}
+						strippedRows={props.strippedRows}
 						onRowSelected={onRowSelected}
 					/>}
 				</tbody>

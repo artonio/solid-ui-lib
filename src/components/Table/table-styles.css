@@ -44,6 +44,10 @@
     transition: box-shadow 0.2s;
 }
 
+.s-datatable .s-datatable-tbody > tr:nth-child(odd).s-datatable-row-striped {
+    background: #fcfcfc;
+}
+
 /*.s-datatable .s-datatable-tbody > tr:nth-child(odd) {*/
 /*    background: red;*/
 /*}*/

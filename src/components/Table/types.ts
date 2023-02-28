@@ -19,6 +19,8 @@ export interface ITableBodyProps extends IBasicProps {
 	selectionMode?: SelectionMode;
 	selection?: any;
 	onRowSelected?: (row: any) => any;
+
+	strippedRows?: boolean;
 }
 
 export interface ITableProps extends IBasicProps {
@@ -33,4 +35,6 @@ export interface ITableProps extends IBasicProps {
 	onSelectionChange?: (value: any) => void
 
 	globalFilter?: boolean;
+
+	strippedRows?: boolean;
 }

@@ -273,8 +273,9 @@ const App: Component = () => {
       <>
         <Table
             data={tableData}
-            globalFilter={true}
-            selectionMode="single"
+            globalFilter
+            strippedRows
+            selectionMode="none"
             selection={selectedRow()}
             onSelectionChange={(value) => {
               selectionChanged(value)
