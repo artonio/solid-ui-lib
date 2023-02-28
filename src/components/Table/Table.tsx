@@ -1,33 +1,12 @@
 import { children, createSignal, For } from 'solid-js';
 // import './Table.module.css'
 import './table-styles.css'
-import { Renderable } from './types';
-
-export interface IBasicProps {
-	children?: any;
-}
-
-export type TableSize = 'small' | 'medium' | 'large';
-
-export interface IColumnProps extends IBasicProps {
-	header: string;
-	code: string;
-}
+import { IColumnProps, ITableBodyProps, ITableProps } from './types';
 
 export const Column = (props: IColumnProps) => {
 	return (
 		<>{props}</>
 	)
-}
-
-export interface ITableProps extends IBasicProps {
-	data: any[];
-	headerRenderer?: Renderable;
-	bodyRenderer?: Renderable;
-
-	onSelectionChange?: (value: any) => void
-
-	globalFilter?: boolean;
 }
 
 const DefaultTableHeaderRenderer = (props: IColumnProps[]) => {
@@ -42,23 +21,23 @@ const DefaultTableHeaderRenderer = (props: IColumnProps[]) => {
 	)
 }
 
-const DefaultTableBodyRenderer = (
-	props: {
-		columns: IColumnProps[],
-		data: any[],
-		onRowSelected?: (row: any) => any
-	}
-) => {
+const DefaultTableBodyRenderer = (props: ITableBodyProps) => {
 	const { onRowSelected } = props;
 
 	const onRowClicked = (row: any): any => {
 		onRowSelected!(row)
 	}
 
+	const isTwoObjectsEqual = (obj1: any, obj2: any) => {
+		if (obj1 && obj2) {
+			return JSON.stringify(obj1, Object.keys(obj1).sort()) === JSON.stringify(obj2, Object.keys(obj2).sort());
+		}
+	}
+
 	return (
 		<For each={props.data}>
 			{person => (
-				<tr onClick={() => onRowClicked(person)}>
+				<tr classList={{'s-datatable-row-selected': isTwoObjectsEqual(person, props.selection)}} onClick={() => onRowClicked(person)}>
 					<For each={props.columns}>
 						{column => (
 							<td>{person[column.code]}</td>
@@ -90,7 +69,10 @@ export const Table = (props: ITableProps) => {
 	const [tableData, setTableData] = createSignal(props.data);
 
 	// destructure only the props that will not change
-	const { headerRenderer, bodyRenderer, onSelectionChange } = props;
+	let { headerRenderer, bodyRenderer, selectionMode, onSelectionChange } = props;
+	if (!selectionMode) {
+		selectionMode = 'none';
+	}
 	const c = children(() => props.children);
 	const columns: IColumnProps[] = c.toArray() as unknown as IColumnProps[]
 
@@ -107,6 +89,12 @@ export const Table = (props: ITableProps) => {
 		setTableData(result)
 	}
 
+	const onRowSelected = (row: any) => {
+		if (selectionMode === 'single') {
+			onSelectionChange!(row)
+		}
+	}
+
 	  return (
 	<>
 		<div>
@@ -121,7 +109,8 @@ export const Table = (props: ITableProps) => {
 					{bodyRenderer ? bodyRenderer(tableData()) : <DefaultTableBodyRenderer
 						columns={columns}
 						data={tableData()}
-						onRowSelected={onSelectionChange}
+						selection={props.selection}
+						onRowSelected={onRowSelected}
 					/>}
 				</tbody>
 			</table>

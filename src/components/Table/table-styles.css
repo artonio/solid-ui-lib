@@ -44,6 +44,15 @@
     transition: box-shadow 0.2s;
 }
 
+/*.s-datatable .s-datatable-tbody > tr:nth-child(odd) {*/
+/*    background: red;*/
+/*}*/
+
+.s-datatable .s-datatable-tbody > tr.s-datatable-row-selected {
+    background: #EEF2FF;
+    color: #4338CA;
+}
+
 .s-datatable .s-datatable-tbody > tr:hover {
     background: #e9ecef;
     color: #495057;

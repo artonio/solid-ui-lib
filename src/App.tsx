@@ -3,8 +3,10 @@ import type { Component } from 'solid-js';
 import logo from './logo.svg';
 import styles from './App.module.css';
 import { Column, Table } from './components/Table/Table';
+import { createEffect, createSignal } from 'solid-js';
 
 const App: Component = () => {
+  const [selectedRow, setSelectedRow] = createSignal<any>(null);
   const tableData = [
     {
       "firstName": "Savage",
@@ -258,13 +260,25 @@ const App: Component = () => {
     }
   ];
 
+  createEffect(() => {
+    console.log(selectedRow())
+  })
+
+  const selectionChanged = (value: any) => {
+    console.log(value)
+    setSelectedRow(value)
+  }
+
   return (
       <>
         <Table
             data={tableData}
             globalFilter={true}
-            onSelectionChange={(value) => console.log(value)}
-        >
+            selectionMode="single"
+            selection={selectedRow()}
+            onSelectionChange={(value) => {
+              selectionChanged(value)
+            }}>
           <Column header="First Name" code="firstName" />
           <Column header="Last Name" code="lastName" />
           <Column header="Age" code="age" />
