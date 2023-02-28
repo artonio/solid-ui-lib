@@ -1,5 +1,6 @@
 import { children, createSignal, For } from 'solid-js';
-import styles from './Table.module.css'
+// import './Table.module.css'
+import './table-styles.css'
 import { Renderable } from './types';
 
 export interface IBasicProps {
@@ -78,7 +79,7 @@ const DefaultTableHeaderRendererWithFilter = (props: {onChange: (value: any) => 
 	}
 
 	return (
-		<div class={styles.headerContainer}>
+		<div classList={{'header-container': true}}>
 			<input type="text" onInput={changeDetected} />
 		</div>
 	)
@@ -112,11 +113,11 @@ export const Table = (props: ITableProps) => {
 			{props.globalFilter && <DefaultTableHeaderRendererWithFilter onChange={(value => simpleSearch(tableData(), value))} />}
 		</div>
 		<div>
-			<table class={styles.sDatatable}>
-				<thead class={styles.sDatatableHead}>
+			<table classList={{'s-datatable': true}}>
+				<thead classList={{'s-datatable-head': true}}>
 					{headerRenderer ? headerRenderer() : <DefaultTableHeaderRenderer {...columns} />}
 				</thead>
-				<tbody class={styles.sDatatableTBody}>
+				<tbody classList={{'s-datatable-tbody': true}}>
 					{bodyRenderer ? bodyRenderer(tableData()) : <DefaultTableBodyRenderer
 						columns={columns}
 						data={tableData()}
