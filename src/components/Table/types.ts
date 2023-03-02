@@ -1,8 +1,6 @@
-export type Renderable = any;
+import { IBasicProps } from '../baseTypes';
 
-export interface IBasicProps {
-	children?: any;
-}
+export type Renderable = any;
 
 export type TableSize = 'small' | 'medium' | 'large';
 export type SelectionMode = 'single' | 'multiple' | 'none';

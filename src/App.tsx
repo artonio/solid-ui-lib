@@ -4,9 +4,13 @@ import logo from './logo.svg';
 import styles from './App.module.css';
 import { Column, Table } from './components/Table/Table';
 import { createEffect, createSignal } from 'solid-js';
+import { Paginator } from './components/Paginator/Paginator';
 
 const App: Component = () => {
   const [selectedRow, setSelectedRow] = createSignal<any>(null);
+  const [first, setFirst] = createSignal(0);
+  const [rows, setRows] = createSignal(10);
+
   const tableData = [
     {
       "firstName": "Savage",
@@ -269,21 +273,31 @@ const App: Component = () => {
     setSelectedRow(value)
   }
 
+  const onPageChange = (event: any) => {
+    setFirst(event.first);
+    setRows(event.rows);
+  };
+
   return (
       <>
-        <Table
-            data={tableData}
-            globalFilter
-            strippedRows
-            selectionMode="none"
-            selection={selectedRow()}
-            onSelectionChange={(value) => {
-              selectionChanged(value)
-            }}>
-          <Column header="First Name" code="firstName" />
-          <Column header="Last Name" code="lastName" />
-          <Column header="Age" code="age" />
-        </Table>
+        <Paginator
+            first={first()}
+            rows={rows()}
+            totalRecords={220}
+            onPageChange={onPageChange}
+        />
+        {/*<Table*/}
+        {/*    data={tableData}*/}
+        {/*    globalFilter*/}
+        {/*    selectionMode="single"*/}
+        {/*    selection={selectedRow()}*/}
+        {/*    onSelectionChange={(value) => {*/}
+        {/*      selectionChanged(value)*/}
+        {/*    }}>*/}
+        {/*  <Column header="First Name" code="firstName" />*/}
+        {/*  <Column header="Last Name" code="lastName" />*/}
+        {/*  <Column header="Age" code="age" />*/}
+        {/*</Table>*/}
       </>
   );
 };

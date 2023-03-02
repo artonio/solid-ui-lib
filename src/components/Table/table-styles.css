@@ -48,10 +48,6 @@
     background: #fcfcfc;
 }
 
-/*.s-datatable .s-datatable-tbody > tr:nth-child(odd) {*/
-/*    background: red;*/
-/*}*/
-
 .s-datatable .s-datatable-tbody > tr.s-datatable-row-selected {
     background: #EEF2FF;
     color: #4338CA;
