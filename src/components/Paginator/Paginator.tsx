@@ -18,7 +18,6 @@ export const Paginator = (props: IPaginatorProps) => {
 	const isLastPage = () => page() === pageCount() - 1;
 	const isEmpty = () => pageCount() === 0;
 
-+
 	createEffect(() => {
 		// Update the page links to display when props change
 		updatePageLinks();
