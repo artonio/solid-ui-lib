@@ -9,7 +9,6 @@ import { NextPageLink } from './NextPageLink';
 
 export const Paginator = (props: IPaginatorProps) => {
 	const mergedProps = mergeProps(PaginatorBaseProps, props)
-	const [pageLinks, setPageLinks] = createSignal<number[]>([]);
 
 	// Derived signals
 	const page = () => Math.floor(mergedProps.first / mergedProps.rows);
@@ -17,15 +16,6 @@ export const Paginator = (props: IPaginatorProps) => {
 	const isFirstPage = () => page() === 0;
 	const isLastPage = () => page() === pageCount() - 1;
 	const isEmpty = () => pageCount() === 0;
-
-	createEffect(() => {
-		// Update the page links to display when props change
-		updatePageLinks();
-		if (page() > 0 && props.first >= props.totalRecords) {
-			changePage((pageCount() - 1) * props.rows, props.rows);
-		}
-	});
-
 	const calculatePageLinkBoundaries = () => {
 		// Calculate the total number of pages from the pageCount() function
 		let numberOfPages = pageCount();
@@ -45,22 +35,27 @@ export const Paginator = (props: IPaginatorProps) => {
 		// Return an array of the start and end indices of the page links to display
 		return [start, end];
 	};
-
-	const updatePageLinks = () => {
+	const pageLinks = (): number[] => {
 		let pageLinks = [];
 		// Get the start and end indices of the page links to display from the calculatePageLinkBoundaries() function
-		let boundaries = calculatePageLinkBoundaries();
-		let start = boundaries[0];
-		let end = boundaries[1];
+		const [start, end] = calculatePageLinkBoundaries();
 
 		// Loop through the page links to display and add them to the pageLinks array
 		for (let i = start; i <= end; i++) {
 			pageLinks.push(i + 1);
 		}
 
-		// Set the page links state with the updated pageLinks array
-		setPageLinks(pageLinks);
+		return pageLinks;
 	};
+	// end of derived signals
+
+	createEffect(() => {
+		// Update the page links to display when props change
+		// updatePageLinks();
+		if (page() > 0 && props.first >= props.totalRecords) {
+			changePage((pageCount() - 1) * props.rows, props.rows);
+		}
+	});
 
 	const changePage = (first: number, rows: number) => {
 		let pc = pageCount();

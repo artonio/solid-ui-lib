@@ -148,7 +148,10 @@ export const Table = (props: ITableProps) => {
 			</table>
 			</div>
 		<div>
-			<Paginator first={firstState()} rows={rowsState()} totalRecords={props.data.length} onPageChange={onPageChange} />
+			<Paginator first={firstState()}
+					   rows={rowsState()}
+					   totalRecords={props.data.length}
+					   onPageChange={onPageChange} />
 		</div>
 	</>
   );
