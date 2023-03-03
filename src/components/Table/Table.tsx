@@ -73,13 +73,21 @@ export const Table = (props: ITableProps) => {
 
 	const [tableData, setTableData] = createSignal(props.data);
 	const [firstState, setFirstState] = createSignal(0);
-	const [rowsState, setRowsState] = createSignal(props.rows || 10);
+	const [rowsState, setRowsState] = createSignal(props.rows || 5);
 
 	createEffect(() => {
 		if (props.data && props.paginator) {
-			setTableData(props.data.slice(firstState(), firstState() + rowsState()))
+			setDataIfPaginator(props.data)
 		}
 	});
+
+	const setDataIfPaginator = (data: any[]) => {
+		if (props.paginator) {
+			setTableData(data.slice(firstState(), firstState() + rowsState()))
+		} else {
+			setTableData(data)
+		}
+	}
 
 	// destructure only the props that will not change
 	let { headerRenderer, bodyRenderer, selectionMode, onSelectionChange } = props;
@@ -89,12 +97,12 @@ export const Table = (props: ITableProps) => {
 	const c = children(() => props.children);
 	const columns: IColumnProps[] = c.toArray() as unknown as IColumnProps[]
 
-	const simpleSearch = (data: any[], search: string) => {
+	const simpleSearch = (search: string) => {
 		if (!search) {
-			setTableData(props.data)
+			setDataIfPaginator(props.data)
 			return;
 		}
-		const result =  data.filter((row: any) => {
+		const result =  props.data.filter((row: any) => {
 			return Object.keys(row).some((key: string) => {
 				return row[key].toString().toLowerCase().includes(search.toLowerCase())
 			})
@@ -111,14 +119,12 @@ export const Table = (props: ITableProps) => {
 	const onPageChange = (event: any) => {
 		setFirstState(event.first);
 		setRowsState(event.rows);
-
-		// const dataToDisplay = props.data.slice(event.first, event.first + event.rows);
 	}
 
 	  return (
 	<>
 		<div>
-			{props.globalFilter && <DefaultTableHeaderRendererWithFilter onChange={(value => simpleSearch(tableData(), value))} />}
+			{props.globalFilter && <DefaultTableHeaderRendererWithFilter onChange={(value => simpleSearch(value))} />}
 		</div>
 		<div>
 			<table classList={{'s-datatable': true}}>
@@ -138,7 +144,7 @@ export const Table = (props: ITableProps) => {
 			</table>
 			</div>
 		<div>
-			<Paginator first={firstState()} rows={rowsState()} totalRecords={100} onPageChange={onPageChange} />
+			<Paginator first={firstState()} rows={rowsState()} totalRecords={props.data.length} onPageChange={onPageChange} />
 		</div>
 	</>
   );

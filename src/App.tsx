@@ -289,6 +289,7 @@ const App: Component = () => {
         <Table
             data={tableData}
             paginator
+            totalRecords={tableData.length}
             globalFilter
             selectionMode="single"
             selection={selectedRow()}

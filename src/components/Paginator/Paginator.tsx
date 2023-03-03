@@ -22,7 +22,11 @@ export const Paginator = (props: IPaginatorProps) => {
 		console.log('page', page() + 1);
 		console.log('pageCount', pageCount());
 		// Update the page links to display when props change
+
 		updatePageLinks();
+		if (page() > 0 && props.first >= props.totalRecords) {
+			changePage((pageCount() - 1) * props.rows, props.rows);
+		}
 	});
 
 	const calculatePageLinkBoundaries = () => {

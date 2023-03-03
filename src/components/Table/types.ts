@@ -39,4 +39,6 @@ export interface ITableProps extends IBasicProps {
 	rows?: number;
 
 	paginator?: boolean;
+
+	totalRecords?: number;
 }
