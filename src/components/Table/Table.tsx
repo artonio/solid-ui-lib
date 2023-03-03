@@ -3,6 +3,7 @@ import { children, createEffect, createSignal, For } from 'solid-js';
 import './table-styles.css'
 import { IColumnProps, ITableBodyProps, ITableProps } from './types';
 import { Paginator } from '../Paginator/Paginator';
+import { isTwoObjectsEqual } from '../utils/isTwoObjectsEqual';
 
 export const Column = (props: IColumnProps) => {
 	return (
@@ -29,17 +30,20 @@ const DefaultTableBodyRenderer = (props: ITableBodyProps) => {
 		onRowSelected!(row)
 	}
 
-	const isTwoObjectsEqual = (obj1: any, obj2: any) => {
-		if (obj1 && obj2) {
-			return JSON.stringify(obj1, Object.keys(obj1).sort()) === JSON.stringify(obj2, Object.keys(obj2).sort());
+
+
+	const isRowSelected = (row: any) => {
+		if (row && props.selection) {
+			return isTwoObjectsEqual(row, props.selection);
 		}
+		return false;
 	}
 
 	return (
 		<For each={props.data}>
 			{person => (
 				<tr classList={{
-					's-datatable-row-selected': isTwoObjectsEqual(person, props.selection),
+					's-datatable-row-selected': isRowSelected(person),
 					's-datatable-row-selectable': props.selectionMode !== 'none',
 					's-datatable-row-striped': props.strippedRows
 				}} onClick={() => onRowClicked(person)}>
