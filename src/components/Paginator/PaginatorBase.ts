@@ -1,4 +1,5 @@
 import { IBasicProps } from '../baseTypes';
+import { IPageLinksBaseProps } from './types';
 
 export interface IPaginatorDefaultProps extends IBasicProps {
 	totalRecords: number;
@@ -8,18 +9,7 @@ export interface IPaginatorDefaultProps extends IBasicProps {
 	template: string;
 }
 
-export interface IPageLinksBaseProps extends IBasicProps {
-	value: any[];
-	page: unknown;
-	rows: number;
-	pageCount?: number;
-	links?: unknown;
-	template?: unknown;
-}
 
-export interface IPageLinksProps extends IPageLinksBaseProps {
-	onClick: (event: {originalEvent: any, value: any}) => void;
-}
 
 
 export const PaginatorBaseProps: IPaginatorDefaultProps = {

@@ -18,6 +18,39 @@ code {
 }
 
 .s-paginator .s-paginator-first {
-  border-top-left-radius: 50%;
-  border-bottom-left-radius: 50%;
+  color: #6c757d;
+  min-width: 3rem;
+  height: 3rem;
+  transition: box-shadow 0.2s;
+  border-radius: 50%;cursor: pointer;
+  text-align: center;
+}
+
+.s-paginator .s-paginator-first:hover {
+  color: #343a40;
+  background: #e9ecef;
+}
+
+.s-paginator .s-paginator-pages .s-paginator-page {
+    color: #6c757d;
+    min-width: 3rem;
+    height: 3rem;
+    margin: 0.143rem;
+    transition: box-shadow 0.2s;
+    border-radius: 50%;cursor: pointer;
+    text-align: center;
+}
+
+.s-paginator .s-paginator-pages .s-paginator-page:hover {
+    color: #343a40;
+    background: #e9ecef;
+}
+
+.s-highlight {
+  background: #EEF2FF;
+  border-color: #EEF2FF;
+  color: #4338CA !important;
+}
+button {
+  all: unset;
 }

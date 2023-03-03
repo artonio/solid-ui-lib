@@ -1,4 +1,6 @@
-export const FirstPageLink = (props: any) => {
+import { IFirstLinkProps } from './types';
+
+export const FirstPageLink = (props: IFirstLinkProps) => {
 	const iconClassName = 's-paginator-icon pi pi-angle-double-left';
 	return (
 		<button type="button" classList={{

@@ -283,7 +283,7 @@ const App: Component = () => {
         <Paginator
             first={first()}
             rows={rows()}
-            totalRecords={220}
+            totalRecords={100}
             onPageChange={onPageChange}
         />
         {/*<Table*/}
