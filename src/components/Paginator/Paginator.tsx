@@ -1,8 +1,11 @@
 import { IPaginatorProps } from './types';
 import { FirstPageLink } from './FirstPageLink';
-import { createEffect, createSignal, mergeProps, onMount } from 'solid-js';
+import { createEffect, createSignal, mergeProps } from 'solid-js';
 import { PaginatorBaseProps } from './PaginatorBase';
 import { PageLinks } from './PageLinks';
+import { LastPageLink } from './LastPageLink';
+import { PrevPageLink } from './PrevPageLink';
+import { NextPageLink } from './NextPageLink';
 
 export const Paginator = (props: IPaginatorProps) => {
 	const mergedProps = mergeProps(PaginatorBaseProps, props)
@@ -17,12 +20,7 @@ export const Paginator = (props: IPaginatorProps) => {
 
 +
 	createEffect(() => {
-		console.log('first', mergedProps.first);
-		console.log('rows', mergedProps.rows);
-		console.log('page', page() + 1);
-		console.log('pageCount', pageCount());
 		// Update the page links to display when props change
-
 		updatePageLinks();
 		if (page() > 0 && props.first >= props.totalRecords) {
 			changePage((pageCount() - 1) * props.rows, props.rows);
@@ -88,6 +86,21 @@ export const Paginator = (props: IPaginatorProps) => {
 		event.preventDefault();
 	};
 
+	const changePageToPrev = (event: any) => {
+		changePage((page() - 1) * props.rows, props.rows);
+		event.preventDefault();
+	}
+
+	const changePageToLast = (event: any) => {
+		changePage((pageCount() - 1) * props.rows, props.rows);
+		event.preventDefault();
+	}
+
+	const changePageToNext = (event: any) => {
+		changePage((page() + 1) * props.rows, props.rows);
+		event.preventDefault();
+	}
+
 	const onPageLinkClick = (event: any) => {
 		console.log('onPageLinkClick', event)
 		changePage((event.value - 1) * props.rows, props.rows);
@@ -96,11 +109,14 @@ export const Paginator = (props: IPaginatorProps) => {
 	return (
 		<div class="s-paginator">
 			<FirstPageLink onClick={changePageToFirst} disabled={isFirstPage() || isEmpty()} />
+			<PrevPageLink onClick={changePageToPrev} disabled={isFirstPage() || isEmpty()} />
 			<PageLinks
 				onClick={onPageLinkClick}
 				value={pageLinks()}
 				page={page()}
 				rows={mergedProps.rows}/>
+			<NextPageLink onClick={changePageToNext} disabled={isLastPage()}/>
+			<LastPageLink onClick={changePageToLast} disabled={isLastPage()}/>
 		</div>
 	)
 }

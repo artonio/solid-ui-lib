@@ -25,3 +25,18 @@ export interface IFirstLinkProps extends IBasicProps {
 	onClick: (event: any) => void;
 	disabled: boolean;
 }
+
+export interface ILastLinkProps extends IBasicProps {
+	onClick: (event: any) => void;
+	disabled: boolean;
+}
+
+export interface IPrevPageLink extends IBasicProps {
+	onClick: (event: any) => void;
+	disabled: boolean;
+}
+
+export interface INextPageLink extends IBasicProps {
+	onClick: (event: any) => void;
+	disabled: boolean;
+}
