@@ -280,24 +280,25 @@ const App: Component = () => {
 
   return (
       <>
-        <Paginator
-            first={first()}
-            rows={rows()}
-            totalRecords={100}
-            onPageChange={onPageChange}
-        />
-        {/*<Table*/}
-        {/*    data={tableData}*/}
-        {/*    globalFilter*/}
-        {/*    selectionMode="single"*/}
-        {/*    selection={selectedRow()}*/}
-        {/*    onSelectionChange={(value) => {*/}
-        {/*      selectionChanged(value)*/}
-        {/*    }}>*/}
-        {/*  <Column header="First Name" code="firstName" />*/}
-        {/*  <Column header="Last Name" code="lastName" />*/}
-        {/*  <Column header="Age" code="age" />*/}
-        {/*</Table>*/}
+        {/*<Paginator*/}
+        {/*    first={first()}*/}
+        {/*    rows={rows()}*/}
+        {/*    totalRecords={100}*/}
+        {/*    onPageChange={onPageChange}*/}
+        {/*/>*/}
+        <Table
+            data={tableData}
+            paginator
+            globalFilter
+            selectionMode="single"
+            selection={selectedRow()}
+            onSelectionChange={(value) => {
+              selectionChanged(value)
+            }}>
+          <Column header="First Name" code="firstName" />
+          <Column header="Last Name" code="lastName" />
+          <Column header="Age" code="age" />
+        </Table>
       </>
   );
 };

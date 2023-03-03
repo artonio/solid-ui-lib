@@ -35,4 +35,8 @@ export interface ITableProps extends IBasicProps {
 	globalFilter?: boolean;
 
 	strippedRows?: boolean;
+
+	rows?: number;
+
+	paginator?: boolean;
 }

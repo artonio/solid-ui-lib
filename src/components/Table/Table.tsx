@@ -1,7 +1,8 @@
-import { children, createSignal, For } from 'solid-js';
+import { children, createEffect, createSignal, For } from 'solid-js';
 // import './Table.module.css'
 import './table-styles.css'
 import { IColumnProps, ITableBodyProps, ITableProps } from './types';
+import { Paginator } from '../Paginator/Paginator';
 
 export const Column = (props: IColumnProps) => {
 	return (
@@ -71,6 +72,14 @@ const DefaultTableHeaderRendererWithFilter = (props: {onChange: (value: any) => 
 export const Table = (props: ITableProps) => {
 
 	const [tableData, setTableData] = createSignal(props.data);
+	const [firstState, setFirstState] = createSignal(0);
+	const [rowsState, setRowsState] = createSignal(props.rows || 10);
+
+	createEffect(() => {
+		if (props.data && props.paginator) {
+			setTableData(props.data.slice(firstState(), firstState() + rowsState()))
+		}
+	});
 
 	// destructure only the props that will not change
 	let { headerRenderer, bodyRenderer, selectionMode, onSelectionChange } = props;
@@ -99,6 +108,13 @@ export const Table = (props: ITableProps) => {
 		}
 	}
 
+	const onPageChange = (event: any) => {
+		setFirstState(event.first);
+		setRowsState(event.rows);
+
+		// const dataToDisplay = props.data.slice(event.first, event.first + event.rows);
+	}
+
 	  return (
 	<>
 		<div>
@@ -121,6 +137,9 @@ export const Table = (props: ITableProps) => {
 				</tbody>
 			</table>
 			</div>
+		<div>
+			<Paginator first={firstState()} rows={rowsState()} totalRecords={100} onPageChange={onPageChange} />
+		</div>
 	</>
   );
 };
