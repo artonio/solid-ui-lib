@@ -98,8 +98,11 @@ export const Table = (props: ITableProps) => {
 	if (!selectionMode) {
 		selectionMode = 'none';
 	}
-	const c = children(() => props.children);
-	const columns: IColumnProps[] = c.toArray() as unknown as IColumnProps[]
+	// const c = children(() => props.children);
+	// let childrenColumns: IColumnProps[] = c.toArray() as unknown as IColumnProps[]
+	// if(!columns) {
+	// 	columns = props.columns;
+	// }
 
 	const simpleSearch = (search: string) => {
 		if (!search) {
@@ -133,11 +136,11 @@ export const Table = (props: ITableProps) => {
 		<div>
 			<table classList={{'s-datatable': true}}>
 				<thead classList={{'s-datatable-head': true}}>
-					{headerRenderer ? headerRenderer() : <DefaultTableHeaderRenderer {...columns} />}
+					{headerRenderer ? headerRenderer() : <DefaultTableHeaderRenderer {...props.columns} />}
 				</thead>
 				<tbody classList={{'s-datatable-tbody': true}}>
 					{bodyRenderer ? bodyRenderer(tableData()) : <DefaultTableBodyRenderer
-						columns={columns}
+						columns={props.columns}
 						data={tableData()}
 						selectionMode={selectionMode}
 						selection={props.selection}

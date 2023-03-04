@@ -19,6 +19,8 @@ export interface ITableBodyProps extends IBasicProps {
 	onRowSelected?: (row: any) => any;
 
 	strippedRows?: boolean;
+
+	rows?: number;
 }
 
 export interface ITableProps extends IBasicProps {
@@ -41,4 +43,6 @@ export interface ITableProps extends IBasicProps {
 	paginator?: boolean;
 
 	totalRecords?: number;
+
+	columns: IColumnProps[];
 }

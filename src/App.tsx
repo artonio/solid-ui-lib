@@ -8,8 +8,6 @@ import { Paginator } from './components/Paginator/Paginator';
 
 const App: Component = () => {
   const [selectedRow, setSelectedRow] = createSignal<any>(null);
-  const [first, setFirst] = createSignal(0);
-  const [rows, setRows] = createSignal(10);
 
   const tableData = [
     {
@@ -264,6 +262,21 @@ const App: Component = () => {
     }
   ];
 
+  const columns = [
+    {
+        code: "firstName",
+        header: "First Name"
+    },
+    {
+        code: "lastName",
+        header: "Last Name"
+    },
+    {
+        code: "age",
+        header: "Age"
+    }
+  ];
+
   createEffect(() => {
     console.log(selectedRow())
   })
@@ -272,11 +285,6 @@ const App: Component = () => {
     console.log(value)
     setSelectedRow(value)
   }
-
-  const onPageChange = (event: any) => {
-    setFirst(event.first);
-    setRows(event.rows);
-  };
 
   return (
       <>
@@ -288,7 +296,9 @@ const App: Component = () => {
         {/*/>*/}
         <Table
             data={tableData}
+            columns={columns}
             paginator
+            rows={5}
             totalRecords={tableData.length}
             globalFilter
             selectionMode="single"
@@ -296,9 +306,6 @@ const App: Component = () => {
             onSelectionChange={(value) => {
               selectionChanged(value)
             }}>
-          <Column header="First Name" code="firstName" />
-          <Column header="Last Name" code="lastName" />
-          <Column header="Age" code="age" />
         </Table>
       </>
   );

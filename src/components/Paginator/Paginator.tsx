@@ -1,6 +1,6 @@
 import { IPaginatorProps } from './types';
 import { FirstPageLink } from './FirstPageLink';
-import { createEffect, createSignal, mergeProps } from 'solid-js';
+import { createEffect, mergeProps } from 'solid-js';
 import { PaginatorBaseProps } from './PaginatorBase';
 import { PageLinks } from './PageLinks';
 import { LastPageLink } from './LastPageLink';
