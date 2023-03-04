@@ -13,6 +13,7 @@ export interface IColumnProps extends IBasicProps {
 export interface ITableHeaderProps extends IBasicProps {
 	columns: IColumnProps[];
 	showGridlines: boolean;
+	size: TableSize;
 }
 
 
@@ -28,11 +29,13 @@ export interface ITableBodyProps extends IBasicProps {
 
 	rows?: number;
 
-	showGridlines?: boolean;
+	showGridlines: boolean;
+	size: TableSize;
 }
 
 export interface ITableDefaultProps extends IBasicProps {
-	showGridlines: boolean;
+	showGridlines?: boolean;
+	size?: TableSize;
 }
 
 export interface ITableProps extends ITableDefaultProps {

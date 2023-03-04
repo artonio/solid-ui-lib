@@ -1,5 +1,4 @@
-import { children, createEffect, createSignal, For, mergeProps } from 'solid-js';
-// import './Table.module.css'
+import { createEffect, createSignal, For, mergeProps } from 'solid-js';
 import './table-styles.scss'
 import { IColumnProps, ITableBodyProps, ITableHeaderProps, ITableProps } from './types';
 import { Paginator } from '../Paginator/Paginator';
@@ -17,7 +16,11 @@ const DefaultTableHeaderRenderer = (props: ITableHeaderProps) => {
 		<tr>
 			<For each={props.columns}>
 				{column => (
-					<th classList={{'s-datatable-gridlines': props.showGridlines}}>{column.header}</th>
+					<th classList={{
+						's-datatable-gridlines': props.showGridlines,
+						's-datatable-small': props.size === 'small',
+						's-datatable-large': props.size === 'large',
+					}}>{column.header}</th>
 				)}
 			</For>
 		</tr>
@@ -50,7 +53,11 @@ const DefaultTableBodyRenderer = (props: ITableBodyProps) => {
 				}} onClick={() => onRowClicked(person)}>
 					<For each={props.columns}>
 						{column => (
-							<td classList={{'s-datatable-gridlines': props.showGridlines}}>{person[column.code]}</td>
+							<td classList={{
+								's-datatable-gridlines': props.showGridlines,
+								's-datatable-small': props.size === 'small',
+								's-datatable-large': props.size === 'large',
+							}}>{person[column.code]}</td>
 						)}
 					</For>
 				</tr>
@@ -138,13 +145,17 @@ export const Table = (input: ITableProps) => {
 		<div>
 			<table classList={{'s-datatable': true}}>
 				<thead classList={{'s-datatable-head': true}}>
-					{headerRenderer ? headerRenderer() : <DefaultTableHeaderRenderer columns={props.columns} showGridlines={props.showGridlines} />}
+					{headerRenderer ? headerRenderer() : <DefaultTableHeaderRenderer
+						size={props.size!}
+						columns={props.columns}
+						showGridlines={props.showGridlines!} />}
 				</thead>
 				<tbody classList={{'s-datatable-tbody': true, 's-datatable-gridlines': props.showGridlines}}>
 					{bodyRenderer ? bodyRenderer(tableData()) : <DefaultTableBodyRenderer
 						columns={props.columns}
 						data={tableData()}
-						showGridlines={props.showGridlines}
+						size={props.size!}
+						showGridlines={props.showGridlines!}
 						selectionMode={selectionMode}
 						selection={props.selection}
 						strippedRows={props.strippedRows}

@@ -21,6 +21,9 @@ $color_3: #4338CA;
             .s-datatable-gridlines {
                 border-right: 1px solid #dee2e6;
             }
+            .s-datatable-small {
+                padding: 0.5rem 0.5rem !important;
+            }
             >th {
                 text-align: left;
                 padding: 1rem 1rem;
@@ -50,6 +53,10 @@ $color_3: #4338CA;
             }
             .s-datatable-gridlines {
                 border-right: 1px solid #dee2e6;
+            }
+
+            .s-datatable-small {
+                padding: 0.5rem 0.5rem !important;
             }
         }
         >tr.s-datatable-row-selected {
