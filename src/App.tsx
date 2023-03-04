@@ -297,6 +297,7 @@ const App: Component = () => {
         <Table
             data={tableData}
             columns={columns}
+            showGridlines
             paginator
             rows={5}
             totalRecords={tableData.length}

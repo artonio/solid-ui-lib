@@ -50,8 +50,6 @@ export const Paginator = (props: IPaginatorProps) => {
 	// end of derived signals
 
 	createEffect(() => {
-		// Update the page links to display when props change
-		// updatePageLinks();
 		if (page() > 0 && props.first >= props.totalRecords) {
 			changePage((pageCount() - 1) * props.rows, props.rows);
 		}

@@ -10,6 +10,12 @@ export interface IColumnProps extends IBasicProps {
 	code: string;
 }
 
+export interface ITableHeaderProps extends IBasicProps {
+	columns: IColumnProps[];
+	showGridlines: boolean;
+}
+
+
 export interface ITableBodyProps extends IBasicProps {
 	columns: IColumnProps[];
 	data: any[];
@@ -21,9 +27,15 @@ export interface ITableBodyProps extends IBasicProps {
 	strippedRows?: boolean;
 
 	rows?: number;
+
+	showGridlines?: boolean;
 }
 
-export interface ITableProps extends IBasicProps {
+export interface ITableDefaultProps extends IBasicProps {
+	showGridlines: boolean;
+}
+
+export interface ITableProps extends ITableDefaultProps {
 	data: any[];
 	headerRenderer?: Renderable;
 	bodyRenderer?: Renderable;

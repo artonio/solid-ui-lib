@@ -1,9 +1,10 @@
-import { children, createEffect, createSignal, For } from 'solid-js';
+import { children, createEffect, createSignal, For, mergeProps } from 'solid-js';
 // import './Table.module.css'
-import './table-styles.css'
-import { IColumnProps, ITableBodyProps, ITableProps } from './types';
+import './table-styles.scss'
+import { IColumnProps, ITableBodyProps, ITableHeaderProps, ITableProps } from './types';
 import { Paginator } from '../Paginator/Paginator';
 import { isTwoObjectsEqual } from '../utils/isTwoObjectsEqual';
+import { TableBaseProps } from './TableBase';
 
 export const Column = (props: IColumnProps) => {
 	return (
@@ -11,12 +12,12 @@ export const Column = (props: IColumnProps) => {
 	)
 }
 
-const DefaultTableHeaderRenderer = (props: IColumnProps[]) => {
+const DefaultTableHeaderRenderer = (props: ITableHeaderProps) => {
 	return (
 		<tr>
-			<For each={props}>
+			<For each={props.columns}>
 				{column => (
-					<th>{column.header}</th>
+					<th classList={{'s-datatable-gridlines': props.showGridlines}}>{column.header}</th>
 				)}
 			</For>
 		</tr>
@@ -45,11 +46,11 @@ const DefaultTableBodyRenderer = (props: ITableBodyProps) => {
 				<tr classList={{
 					's-datatable-row-selected': isRowSelected(person),
 					's-datatable-row-selectable': props.selectionMode !== 'none',
-					's-datatable-row-striped': props.strippedRows
+					's-datatable-row-striped': props.strippedRows,
 				}} onClick={() => onRowClicked(person)}>
 					<For each={props.columns}>
 						{column => (
-							<td>{person[column.code]}</td>
+							<td classList={{'s-datatable-gridlines': props.showGridlines}}>{person[column.code]}</td>
 						)}
 					</For>
 				</tr>
@@ -73,7 +74,8 @@ const DefaultTableHeaderRendererWithFilter = (props: {onChange: (value: any) => 
 	)
 }
 
-export const Table = (props: ITableProps) => {
+export const Table = (input: ITableProps) => {
+	const props = mergeProps(TableBaseProps, input)
 
 	const [tableData, setTableData] = createSignal(props.data);
 	const [firstState, setFirstState] = createSignal(0);
@@ -136,12 +138,13 @@ export const Table = (props: ITableProps) => {
 		<div>
 			<table classList={{'s-datatable': true}}>
 				<thead classList={{'s-datatable-head': true}}>
-					{headerRenderer ? headerRenderer() : <DefaultTableHeaderRenderer {...props.columns} />}
+					{headerRenderer ? headerRenderer() : <DefaultTableHeaderRenderer columns={props.columns} showGridlines={props.showGridlines} />}
 				</thead>
-				<tbody classList={{'s-datatable-tbody': true}}>
+				<tbody classList={{'s-datatable-tbody': true, 's-datatable-gridlines': props.showGridlines}}>
 					{bodyRenderer ? bodyRenderer(tableData()) : <DefaultTableBodyRenderer
 						columns={props.columns}
 						data={tableData()}
+						showGridlines={props.showGridlines}
 						selectionMode={selectionMode}
 						selection={props.selection}
 						strippedRows={props.strippedRows}

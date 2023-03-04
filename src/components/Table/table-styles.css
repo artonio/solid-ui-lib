@@ -66,18 +66,11 @@
     padding: 1rem 1rem;
 }
 
-.sDatatableCellSmall {
+.s-datatable-small {
     padding: 0.5rem 0.5rem !important;
 }
 
-.sDatatableCellLarge {
+.s-datatable-large {
     padding: 1.5rem 1.5rem !important;
 }
 
-.sDatatableHeaderCellSmall {
-    padding: 0.5rem 0.5rem !important;
-}
-
-.sDatatableHeaderCellLarge {
-    padding: 1.5rem 1.5rem !important;
-}
