@@ -299,7 +299,8 @@ const App: Component = () => {
             columns={columns}
             showGridlines
             paginator
-            rows={5}
+            strippedRows
+            rows={8}
             totalRecords={tableData.length}
             globalFilter
             selectionMode="single"

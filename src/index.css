@@ -14,7 +14,12 @@ code {
 }
 
 .s-paginator {
-
+    text-align: center;
+    background-color: white;
+    border-bottom: 1px solid #dee2e6;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+    padding: 5px;
 }
 
 .s-paginator .s-paginator-first {
