@@ -1,7 +1,10 @@
-import { children, createSignal, For } from 'solid-js';
+import { children, createEffect, createSignal, For, mergeProps } from 'solid-js';
 // import './Table.module.css'
-import './table-styles.css'
-import { IColumnProps, ITableBodyProps, ITableProps } from './types';
+import './table-styles.scss'
+import { IColumnProps, ITableBodyProps, ITableHeaderProps, ITableProps } from './types';
+import { Paginator } from '../Paginator/Paginator';
+import { isTwoObjectsEqual } from '../utils/isTwoObjectsEqual';
+import { TableBaseProps } from './TableBase';
 
 export const Column = (props: IColumnProps) => {
 	return (
@@ -9,12 +12,12 @@ export const Column = (props: IColumnProps) => {
 	)
 }
 
-const DefaultTableHeaderRenderer = (props: IColumnProps[]) => {
+const DefaultTableHeaderRenderer = (props: ITableHeaderProps) => {
 	return (
 		<tr>
-			<For each={props}>
+			<For each={props.columns}>
 				{column => (
-					<th>{column.header}</th>
+					<th classList={{'s-datatable-gridlines': props.showGridlines}}>{column.header}</th>
 				)}
 			</For>
 		</tr>
@@ -28,23 +31,26 @@ const DefaultTableBodyRenderer = (props: ITableBodyProps) => {
 		onRowSelected!(row)
 	}
 
-	const isTwoObjectsEqual = (obj1: any, obj2: any) => {
-		if (obj1 && obj2) {
-			return JSON.stringify(obj1, Object.keys(obj1).sort()) === JSON.stringify(obj2, Object.keys(obj2).sort());
+
+
+	const isRowSelected = (row: any) => {
+		if (row && props.selection) {
+			return isTwoObjectsEqual(row, props.selection);
 		}
+		return false;
 	}
 
 	return (
 		<For each={props.data}>
 			{person => (
 				<tr classList={{
-					's-datatable-row-selected': isTwoObjectsEqual(person, props.selection),
+					's-datatable-row-selected': isRowSelected(person),
 					's-datatable-row-selectable': props.selectionMode !== 'none',
-					's-datatable-row-striped': props.strippedRows
+					's-datatable-row-striped': props.strippedRows,
 				}} onClick={() => onRowClicked(person)}>
 					<For each={props.columns}>
 						{column => (
-							<td>{person[column.code]}</td>
+							<td classList={{'s-datatable-gridlines': props.showGridlines}}>{person[column.code]}</td>
 						)}
 					</For>
 				</tr>
@@ -68,24 +74,44 @@ const DefaultTableHeaderRendererWithFilter = (props: {onChange: (value: any) => 
 	)
 }
 
-export const Table = (props: ITableProps) => {
+export const Table = (input: ITableProps) => {
+	const props = mergeProps(TableBaseProps, input)
 
 	const [tableData, setTableData] = createSignal(props.data);
+	const [firstState, setFirstState] = createSignal(0);
+	const [rowsState, setRowsState] = createSignal(props.rows || 5);
+
+	createEffect(() => {
+		if (props.data && props.paginator) {
+			setDataIfPaginator(props.data)
+		}
+	});
+
+	const setDataIfPaginator = (data: any[]) => {
+		if (props.paginator) {
+			setTableData(data.slice(firstState(), firstState() + rowsState()))
+		} else {
+			setTableData(data)
+		}
+	}
 
 	// destructure only the props that will not change
 	let { headerRenderer, bodyRenderer, selectionMode, onSelectionChange } = props;
 	if (!selectionMode) {
 		selectionMode = 'none';
 	}
-	const c = children(() => props.children);
-	const columns: IColumnProps[] = c.toArray() as unknown as IColumnProps[]
+	// const c = children(() => props.children);
+	// let childrenColumns: IColumnProps[] = c.toArray() as unknown as IColumnProps[]
+	// if(!columns) {
+	// 	columns = props.columns;
+	// }
 
-	const simpleSearch = (data: any[], search: string) => {
+	const simpleSearch = (search: string) => {
 		if (!search) {
-			setTableData(props.data)
+			setDataIfPaginator(props.data)
 			return;
 		}
-		const result =  data.filter((row: any) => {
+		const result =  props.data.filter((row: any) => {
 			return Object.keys(row).some((key: string) => {
 				return row[key].toString().toLowerCase().includes(search.toLowerCase())
 			})
@@ -99,20 +125,26 @@ export const Table = (props: ITableProps) => {
 		}
 	}
 
+	const onPageChange = (event: any) => {
+		setFirstState(event.first);
+		setRowsState(event.rows);
+	}
+
 	  return (
 	<>
 		<div>
-			{props.globalFilter && <DefaultTableHeaderRendererWithFilter onChange={(value => simpleSearch(tableData(), value))} />}
+			{props.globalFilter && <DefaultTableHeaderRendererWithFilter onChange={(value => simpleSearch(value))} />}
 		</div>
 		<div>
 			<table classList={{'s-datatable': true}}>
 				<thead classList={{'s-datatable-head': true}}>
-					{headerRenderer ? headerRenderer() : <DefaultTableHeaderRenderer {...columns} />}
+					{headerRenderer ? headerRenderer() : <DefaultTableHeaderRenderer columns={props.columns} showGridlines={props.showGridlines} />}
 				</thead>
-				<tbody classList={{'s-datatable-tbody': true}}>
+				<tbody classList={{'s-datatable-tbody': true, 's-datatable-gridlines': props.showGridlines}}>
 					{bodyRenderer ? bodyRenderer(tableData()) : <DefaultTableBodyRenderer
-						columns={columns}
+						columns={props.columns}
 						data={tableData()}
+						showGridlines={props.showGridlines}
 						selectionMode={selectionMode}
 						selection={props.selection}
 						strippedRows={props.strippedRows}
@@ -121,6 +153,12 @@ export const Table = (props: ITableProps) => {
 				</tbody>
 			</table>
 			</div>
+		<div>
+			<Paginator first={firstState()}
+					   rows={rowsState()}
+					   totalRecords={props.data.length}
+					   onPageChange={onPageChange} />
+		</div>
 	</>
   );
 };

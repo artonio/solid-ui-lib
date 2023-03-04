@@ -1,0 +1,83 @@
+$color_1: #343a40;
+$color_2: #495057;
+$color_3: #4338CA;
+
+.s-datatable {
+    border-spacing: 0;
+    width: 100%;
+
+    .s-datatable-gridlines {
+        .s-datatable-tbody {
+            >tr {
+                >td {
+                    border-width: 1px;
+                }
+            }
+        }
+    }
+
+    .s-datatable-head {
+        >tr {
+            .s-datatable-gridlines {
+                border-right: 1px solid #dee2e6;
+            }
+            >th {
+                text-align: left;
+                padding: 1rem 1rem;
+                border: 1px solid #dee2e6;
+                border-width: 0 0 1px 0;
+                font-weight: 700;
+                color: $color_1;
+                background: #f8f9fa;
+                transition: box-shadow 0.2s;
+            }
+        }
+    }
+    .s-datatable-tbody {
+        >tr {
+            background: #ffffff;
+            color: $color_2;
+            transition: box-shadow 0.2s;
+            &:nth-child(odd).s-datatable-row-striped {
+                background: #fcfcfc;
+            }
+
+            >td {
+                text-align: left;
+                border-bottom: 1px solid #dee2e6;
+                //border-width: 0 0 1px 0;
+                padding: 1rem 1rem;
+            }
+            .s-datatable-gridlines {
+                border-right: 1px solid #dee2e6;
+            }
+        }
+        >tr.s-datatable-row-selected {
+            background: #EEF2FF;
+            color: $color_3;
+        }
+        >tr.s-datatable-row-selectable {
+            &:hover {
+                background: #e9ecef;
+                color: $color_2;
+                cursor: pointer;
+            }
+        }
+    }
+}
+.header-container {
+    display: flex;
+    justify-content: flex-end;
+    background: #f8f9fa;
+    color: $color_1;
+    border: 1px solid #dee2e6;
+    border-width: 1px 0 1px 0;
+    padding: 1rem 1rem;
+    font-weight: 700;
+}
+.s-datatable-small {
+    padding: 0.5rem 0.5rem !important;
+}
+.s-datatable-large {
+    padding: 1.5rem 1.5rem !important;
+}

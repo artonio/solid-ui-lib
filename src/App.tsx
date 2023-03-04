@@ -4,9 +4,11 @@ import logo from './logo.svg';
 import styles from './App.module.css';
 import { Column, Table } from './components/Table/Table';
 import { createEffect, createSignal } from 'solid-js';
+import { Paginator } from './components/Paginator/Paginator';
 
 const App: Component = () => {
   const [selectedRow, setSelectedRow] = createSignal<any>(null);
+
   const tableData = [
     {
       "firstName": "Savage",
@@ -260,6 +262,21 @@ const App: Component = () => {
     }
   ];
 
+  const columns = [
+    {
+        code: "firstName",
+        header: "First Name"
+    },
+    {
+        code: "lastName",
+        header: "Last Name"
+    },
+    {
+        code: "age",
+        header: "Age"
+    }
+  ];
+
   createEffect(() => {
     console.log(selectedRow())
   })
@@ -271,18 +288,26 @@ const App: Component = () => {
 
   return (
       <>
+        {/*<Paginator*/}
+        {/*    first={first()}*/}
+        {/*    rows={rows()}*/}
+        {/*    totalRecords={100}*/}
+        {/*    onPageChange={onPageChange}*/}
+        {/*/>*/}
         <Table
             data={tableData}
-            globalFilter
+            columns={columns}
+            showGridlines
+            paginator
             strippedRows
-            selectionMode="none"
+            rows={8}
+            totalRecords={tableData.length}
+            globalFilter
+            selectionMode="single"
             selection={selectedRow()}
             onSelectionChange={(value) => {
               selectionChanged(value)
             }}>
-          <Column header="First Name" code="firstName" />
-          <Column header="Last Name" code="lastName" />
-          <Column header="Age" code="age" />
         </Table>
       </>
   );
