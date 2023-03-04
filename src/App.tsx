@@ -297,10 +297,10 @@ const App: Component = () => {
         <Table
             data={tableData}
             columns={columns}
-            // showGridlines
-            paginator
+            showGridlines
             size="small"
             strippedRows
+            paginator
             rows={8}
             totalRecords={tableData.length}
             globalFilter

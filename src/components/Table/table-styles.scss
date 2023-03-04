@@ -37,6 +37,11 @@ $color_3: #4338CA;
         }
     }
     .s-datatable-tbody {
+        .s-datatable-row-selected {
+            background: #EEF2FF !important;
+            color: $color_3;
+        }
+
         >tr {
             background: #ffffff;
             color: $color_2;
@@ -59,10 +64,7 @@ $color_3: #4338CA;
                 padding: 0.5rem 0.5rem !important;
             }
         }
-        >tr.s-datatable-row-selected {
-            background: #EEF2FF;
-            color: $color_3;
-        }
+
         >tr.s-datatable-row-selectable {
             &:hover {
                 background: #e9ecef;
