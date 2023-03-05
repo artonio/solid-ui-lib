@@ -6,6 +6,21 @@ $color_3: #4338CA;
     border-spacing: 0;
     width: 100%;
 
+    .s-column-header-content {
+        display: flex;
+        align-items: center;
+    }
+
+    .s-sortable-column {
+        cursor: pointer;
+
+        .s-sortable-column-icon {
+            margin-left: 0.5rem;
+        }
+    }
+
+
+
     .s-datatable-gridlines {
         .s-datatable-tbody {
             >tr {
@@ -53,7 +68,6 @@ $color_3: #4338CA;
             >td {
                 text-align: left;
                 border-bottom: 1px solid #dee2e6;
-                //border-width: 0 0 1px 0;
                 padding: 1rem 1rem;
             }
             .s-datatable-gridlines {
@@ -84,9 +98,4 @@ $color_3: #4338CA;
     padding: 1rem 1rem;
     font-weight: 700;
 }
-.s-datatable-small {
-    padding: 0.5rem 0.5rem !important;
-}
-.s-datatable-large {
-    padding: 1.5rem 1.5rem !important;
-}
+

@@ -1,9 +1,10 @@
-import { createEffect, createSignal, For, mergeProps } from 'solid-js';
+import { createEffect, createSignal, For, mergeProps, Show, useContext } from 'solid-js';
 import './table-styles.scss'
 import { IColumnProps, ITableBodyProps, ITableHeaderProps, ITableProps } from './types';
 import { Paginator } from '../Paginator/Paginator';
 import { isTwoObjectsEqual } from '../utils/isTwoObjectsEqual';
 import { TableBaseProps } from './TableBase';
+import { sortAsc, sortDesc } from '../utils/sortAscDesc';
 
 export const Column = (props: IColumnProps) => {
 	return (
@@ -11,7 +12,16 @@ export const Column = (props: IColumnProps) => {
 	)
 }
 
+const [sortOrder, setSortOrder] = createSignal('none');
+
 const DefaultTableHeaderRenderer = (props: ITableHeaderProps) => {
+
+	const onSort = (event: any, column: IColumnProps) => {
+		if (props.sortMode !== 'none') {
+			props.onSort!(column)
+		}
+	}
+
 	return (
 		<tr>
 			<For each={props.columns}>
@@ -20,7 +30,22 @@ const DefaultTableHeaderRenderer = (props: ITableHeaderProps) => {
 						's-datatable-gridlines': props.showGridlines,
 						's-datatable-small': props.size === 'small',
 						's-datatable-large': props.size === 'large',
-					}}>{column.header}</th>
+						's-sortable-column': props.sortMode !== 'none'
+					}}
+					onClick={() => onSort(event, column)}
+					>
+						<div classList={{'s-column-header-content': true}}>
+							<span>{column.header}</span>
+							<Show when={props.sortMode !== 'none'} keyed={true}>
+								<span class="pi pi-fw" classList={{
+									's-sortable-column-icon': props.sortMode !== 'none',
+									'pi-sort-alt': sortOrder() === 'none',
+									'pi-sort-amount-up-alt': sortOrder() === 'asc',
+									'pi-sort-amount-down-alt': sortOrder() === 'desc'
+								}}></span>
+							</Show>
+						</div>
+					</th>
 				)}
 			</For>
 		</tr>
@@ -107,11 +132,6 @@ export const Table = (input: ITableProps) => {
 	if (!selectionMode) {
 		selectionMode = 'none';
 	}
-	// const c = children(() => props.children);
-	// let childrenColumns: IColumnProps[] = c.toArray() as unknown as IColumnProps[]
-	// if(!columns) {
-	// 	columns = props.columns;
-	// }
 
 	const simpleSearch = (search: string) => {
 		if (!search) {
@@ -137,8 +157,31 @@ export const Table = (input: ITableProps) => {
 		setRowsState(event.rows);
 	}
 
+	const onSort = (column: IColumnProps) => {
+		let sortedData = props.data;
+		if (sortOrder() === 'none') {
+			sortedData = sortAsc(props.data, column);
+			setSortOrder('asc')
+			setDataIfPaginator(sortedData);
+			return;
+		}
+		if (sortOrder() === 'asc') {
+			sortedData = sortDesc(props.data, column);
+			setSortOrder('desc')
+			setDataIfPaginator(sortedData);
+			return;
+		}
+		if (sortOrder() === 'desc') {
+			sortedData = sortAsc(props.data, column);
+			setSortOrder('asc');
+			setDataIfPaginator(sortedData);
+			return;
+		}
+		console.log('onSort', column)
+	}
+
 	  return (
-	<>
+		  <>
 		<div>
 			{props.globalFilter && <DefaultTableHeaderRendererWithFilter onChange={(value => simpleSearch(value))} />}
 		</div>
@@ -146,6 +189,8 @@ export const Table = (input: ITableProps) => {
 			<table classList={{'s-datatable': true}}>
 				<thead classList={{'s-datatable-head': true}}>
 					{headerRenderer ? headerRenderer() : <DefaultTableHeaderRenderer
+						onSort={onSort}
+						sortMode={props.sortMode!}
 						size={props.size!}
 						columns={props.columns}
 						showGridlines={props.showGridlines!} />}
@@ -170,6 +215,6 @@ export const Table = (input: ITableProps) => {
 					   totalRecords={props.data.length}
 					   onPageChange={onPageChange} />
 		</div>
-	</>
+		  </>
   );
 };

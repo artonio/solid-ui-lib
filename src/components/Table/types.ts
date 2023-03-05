@@ -14,6 +14,8 @@ export interface ITableHeaderProps extends IBasicProps {
 	columns: IColumnProps[];
 	showGridlines: boolean;
 	size: TableSize;
+	sortMode: 'single' | 'multiple' | 'none';
+	onSort: (column: IColumnProps) => void;
 }
 
 
@@ -36,6 +38,7 @@ export interface ITableBodyProps extends IBasicProps {
 export interface ITableDefaultProps extends IBasicProps {
 	showGridlines?: boolean;
 	size?: TableSize;
+	sortMode?: 'single' | 'multiple' | 'none';
 }
 
 export interface ITableProps extends ITableDefaultProps {
@@ -60,4 +63,5 @@ export interface ITableProps extends ITableDefaultProps {
 	totalRecords?: number;
 
 	columns: IColumnProps[];
+
 }

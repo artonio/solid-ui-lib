@@ -298,7 +298,8 @@ const App: Component = () => {
             data={tableData}
             columns={columns}
             showGridlines
-            size="small"
+            sortMode="single"
+            size="medium"
             strippedRows
             paginator
             rows={8}
